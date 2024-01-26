@@ -1,0 +1,24 @@
+Desc: https://leetcode.com/problems/course-schedule-ii/
+
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        prereq = {i:[] for i in range(numCourses)}
+        for crs, pre in prerequisites:
+            prereq[crs].append(pre)
+        op =[]
+        visited= set()
+        cycle = set()
+        def dfs(crs):
+            if crs in cycle: return False
+            if crs in visited: return True
+            cycle.add(crs)
+            for p in prereq[crs]:
+                if dfs(p)==False: return False
+            cycle.remove(crs)
+            visited.add(crs)
+            op.append(crs)
+            return True
+
+        for i in range(0,numCourses):
+            if dfs(i)==False: return []
+        return op
