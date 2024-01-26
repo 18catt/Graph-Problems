@@ -1,0 +1,25 @@
+Question link:https://leetcode.com/problems/course-schedule/
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        #map to store the prerequisites
+        prereq = {i:[] for i in range(numCourses)}
+        for crs, pre in prerequisites:
+            prereq[crs].append(pre)
+        #hashset to avoid cycle
+        visited= set()
+        def dfs(crs):
+            if crs in visited: return False
+            if prereq[crs] == []: return True
+            visited.add(crs)
+            for p in prereq[crs]:
+                if dfs(p)==False: return False
+            visited.remove(crs)
+            prereq[crs]=[]
+            return True
+
+        for i in range(numCourses):
+            if dfs(i)==False:
+                return False
+        return True
+        
